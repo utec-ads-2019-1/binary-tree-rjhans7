@@ -12,12 +12,26 @@ class BSTree {
     public:
         BSTree() : root(nullptr) {};
 
-        bool find(T data) { 
-            // TODO
-        } 
+        bool find(T data) {
+            auto temp = root;
+            while (temp) {
+                if (data == temp->data)
+                    return true;
+                else if (data > temp->data)
+                    temp = temp->right;
+                else
+                    temp = temp->left;
+            }
+            return false;
+        }
 
         bool insert(T data) {
-            // TODO
+            auto temp = root;
+            if (find (data)){
+
+            }else{
+
+            }
         }
 
         bool remove(T data) {
@@ -27,6 +41,8 @@ class BSTree {
         unsigned int size() {
             // TODO
         }
+
+//Solo cout
 
         void traversePreOrder() {
             // TODO

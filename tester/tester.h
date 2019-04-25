@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>   
 
-#include "../mocker/mocker.h"
+#include "../mocker/mocker.cpp"
 #include "../bstree.h"
 
 using namespace std;
@@ -33,7 +33,7 @@ class Tester {
         static void testBSFTree(Mocker, vector<T>);
 
         template <typename T>
-        static void sortAndPrune(vector<T>&);
+        static void sortAndPrune(vector<T>&); //Elimina repetidos y los ordena
 
     public:
         static void execute();
