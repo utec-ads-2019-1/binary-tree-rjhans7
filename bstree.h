@@ -8,9 +8,10 @@ template <typename T>
 class BSTree {
     private:
         Node<T> *root;
+        int nodes;
 
     public:
-        BSTree() : root(nullptr) {};
+        BSTree() : root(nullptr), nodes(0) {};
 
         bool find(T data) {
             auto temp = root;
@@ -26,14 +27,38 @@ class BSTree {
         }
 
         bool insert(T data) {
+            //Equilibra los niveles del arbol, luego el heapify ordena los valores
             auto temp = root;
-            if (find (data)){
+            if (find (data))
+                return false;
+            else{
+                auto newSon = new Node <T> (data);
+                while (temp){
+                    if (temp->left == nullptr){
+                        temp->left = newSon;
+                        nodes++;
+                        heapify();
+                        return true;
+                    }else if (temp->right == nullptr){
+                        temp->right = newSon;
+                        nodes++;
+                        heapify();
+                        return true;
+                    }else{
+                        if(temp->left->left== nullptr || temp->left->right== nullptr)
+                            temp = temp->left;
+                        temp = temp->right;
+                    }
 
-            }else{
-
+                }
+                root = newSon;
+                nodes++;
+                return true;
             }
         }
+        void heapify(){
 
+        }
         bool remove(T data) {
             // TODO
         }
@@ -42,7 +67,7 @@ class BSTree {
             // TODO
         }
 
-//Solo cout
+        //Solo cout
 
         void traversePreOrder() {
             // TODO
