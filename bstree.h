@@ -15,56 +15,52 @@ class BSTree {
 
         bool find(T data) {
             auto temp = root;
-            while (temp) {
+                while (temp) {
                 if (data == temp->data)
                     return true;
                 else if (data > temp->data)
-                    temp = temp->right;
+                        temp = temp->right;
                 else
-                    temp = temp->left;
+                        temp = temp->left;
             }
             return false;
         }
 
         bool insert(T data) {
-            //Equilibra los niveles del arbol, luego el heapify ordena los valores
-            auto temp = root;
+            Node <T>** temp = &root;
             if (find (data))
                 return false;
             else{
                 auto newSon = new Node <T> (data);
-                while (temp){
-                    if (temp->left == nullptr){
-                        temp->left = newSon;
-                        nodes++;
-                        heapify();
-                        return true;
-                    }else if (temp->right == nullptr){
-                        temp->right = newSon;
-                        nodes++;
-                        heapify();
-                        return true;
-                    }else{
-                        if(temp->left->left== nullptr || temp->left->right== nullptr)
-                            temp = temp->left;
-                        temp = temp->right;
+                if(!root)
+                    root = newSon;
+                else{
+                    while(*temp){
+                        if (data < (*temp)->data)
+                            temp = &((*temp)->left);
+                        else
+                            temp = &((*temp)->right);
                     }
-
+                    *temp = newSon;
                 }
-                root = newSon;
+
                 nodes++;
                 return true;
             }
         }
-        void heapify(){
 
-        }
         bool remove(T data) {
-            // TODO
+            if (find(data))
+                return false;
+            else{
+
+
+            nodes--;
+            }
         }
 
         unsigned int size() {
-            // TODO
+            return nodes;
         }
 
         //Solo cout
