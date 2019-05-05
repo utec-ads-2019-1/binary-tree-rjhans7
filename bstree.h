@@ -49,13 +49,12 @@ class BSTree {
             }
         }
 
-        bool remove(T data) { //Revisar remove
+        bool remove(T data) {
             if (!find(data))
                 return false;
             else{
-                //Ubicar el valor
                 Node <T> ** temp = &root;
-                while(*temp){
+                while(*temp){                   //Ubica el valor
                     if (data == (*temp)->data)
                         break;
                     else if (data < (*temp)->data)
@@ -63,12 +62,11 @@ class BSTree {
                     else
                         temp = &((*temp)->right);
                 }
-                if(!(*temp)->left && !(*temp)->right) {
-                    delete *temp;
+                if(((*temp)->left == nullptr) && ((*temp)->right== nullptr)) {
                     *temp = nullptr;
                     nodes--;
                     return true;
-                }else if (!(*temp)->right || !(*temp)->left){ //Falta matar al nodo
+                }else if (((*temp)->left == nullptr) != ((*temp)->right == nullptr)){ //Falta matar al nodo
                     if((*temp)->right)
                         *temp = (*temp)->right;
                     else
@@ -76,13 +74,16 @@ class BSTree {
                     nodes--;
                     return true;
                 }else{
-                    auto temp2 = temp;
-                    while ((*temp)->left && (*temp)->right) {
-                        temp = &((*temp)->right);
-                        while ((*temp)->left)
-                            temp = &((*temp)->left);
+                    auto temp2 = *temp;
+                    temp = &((*temp)->right);
+                    while ((*temp)->left)
+                        temp = &((*temp)->left);
+                    swap((*temp)->data, (temp2)->data);
+                    if((*temp)->right){
+                        *temp = (*temp)->right;
+                        nodes--;
+                        return true;
                     }
-                    swap((*temp)->data, (*temp2)->data);
                     delete *temp;
                     *temp = nullptr;
                     nodes--;
