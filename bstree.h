@@ -49,13 +49,45 @@ class BSTree {
             }
         }
 
-        bool remove(T data) {
-            if (find(data))
+        bool remove(T data) { //Revisar remove
+            if (!find(data))
                 return false;
             else{
-
-
-            nodes--;
+                //Ubicar el valor
+                Node <T> ** temp = &root;
+                while(*temp){
+                    if (data == (*temp)->data)
+                        break;
+                    else if (data < (*temp)->data)
+                        temp = &((*temp)->left);
+                    else
+                        temp = &((*temp)->right);
+                }
+                if(!(*temp)->left && !(*temp)->right) {
+                    delete *temp;
+                    *temp = nullptr;
+                    nodes--;
+                    return true;
+                }else if (!(*temp)->right || !(*temp)->left){ //Falta matar al nodo
+                    if((*temp)->right)
+                        *temp = (*temp)->right;
+                    else
+                        *temp = (*temp)->left;
+                    nodes--;
+                    return true;
+                }else{
+                    auto temp2 = temp;
+                    while ((*temp)->left && (*temp)->right) {
+                        temp = &((*temp)->right);
+                        while ((*temp)->left)
+                            temp = &((*temp)->left);
+                    }
+                    swap((*temp)->data, (*temp2)->data);
+                    delete *temp;
+                    *temp = nullptr;
+                    nodes--;
+                    return true;
+                }
             }
         }
 
@@ -66,15 +98,50 @@ class BSTree {
         //Solo cout
 
         void traversePreOrder() {
-            // TODO
+            if (root)
+                PreOrder(root);
+            else
+                throw out_of_range("Empty Tree!");
+
+        }
+        void PreOrder(Node<T> * temp){
+            if(temp) {
+                cout << temp->data << " - ";
+                PreOrder(temp->left);
+                PreOrder(temp->right);
+            }else
+                return;
         }
 
         void traverseInOrder() {
-            // TODO
+            if (root)
+                InOrder(root);
+            else
+                throw out_of_range("Empty Tree!");
+        }
+        void InOrder(Node<T> * temp) {
+            if (temp){
+                InOrder(temp->left);
+                cout << temp->data << " - ";
+                InOrder(temp->right);
+            }else
+                return;
+
         }
 
         void traversePostOrder() {
-            // TODO
+            if(root)
+                PostOrder(root);
+            else
+                throw out_of_range("Empty Tree!");
+        }
+        void PostOrder(Node<T> * temp) {
+            if(temp) {
+                PostOrder(temp->left);
+                PostOrder(temp->right);
+                cout << temp->data << " - ";
+            }else
+                return;
         }
 
         Iterator<T> begin() {
