@@ -54,7 +54,7 @@ class BSTree {
                 return false;
             else{
                 Node <T> ** temp = &root;
-                while(*temp){                   //Ubica el valor
+                while(*temp){
                     if (data == (*temp)->data)
                         break;
                     else if (data < (*temp)->data)
@@ -66,7 +66,7 @@ class BSTree {
                     *temp = nullptr;
                     nodes--;
                     return true;
-                }else if (((*temp)->left == nullptr) != ((*temp)->right == nullptr)){ //Falta matar al nodo
+                }else if (((*temp)->left == nullptr) != ((*temp)->right == nullptr)){
                     if((*temp)->right)
                         *temp = (*temp)->right;
                     else
@@ -95,8 +95,6 @@ class BSTree {
         unsigned int size() {
             return nodes;
         }
-
-        //Solo cout
 
         void traversePreOrder() {
             if (root)
@@ -146,15 +144,25 @@ class BSTree {
         }
 
         Iterator<T> begin() {
-            // TODO
+            if(root) {
+                auto it = new Iterator<T>(root);
+                return *it;
+            }else {
+                auto it = new Iterator<T>();
+                return *it;
+            }
         }
 
         Iterator<T> end() { 
-            // TODO
+            auto it = new Iterator<T>();
+            return *it;
         }
 
         ~BSTree() {
-            // TODO
+            if(root)
+                root->killSelf();
+            root = nullptr;
+            nodes = 0;
         }
 };
 
