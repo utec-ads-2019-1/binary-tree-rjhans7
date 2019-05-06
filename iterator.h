@@ -37,11 +37,14 @@ class Iterator {
             return this->current != other.current;
         }
 
-        Iterator<T>& operator++() {
+        Iterator<T> operator++() {
             if(current) {
-                if((!current->left && !current->right)||(current!=secondStack->top())) {
+                if((!current->left && !current->right) && !firstStack->empty()) {
                     current = firstStack->top();
-                    secondStack->push(current);
+                    firstStack->pop();
+                }else if (!current->right && !firstStack->empty()){
+                    current = firstStack->top();
+                    firstStack->pop();
                 }else {
                     if (current->right) {
                         current = current->right;
@@ -52,10 +55,7 @@ class Iterator {
 
                     }
                 }
-            }else{
-                throw out_of_range("Nullptr");
             }
-
             return *this;
         }
 
