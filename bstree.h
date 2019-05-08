@@ -146,6 +146,7 @@ class BSTree {
         Iterator<T> begin() {
             if(root) {
                 auto it = new Iterator<T>(root);
+                it->makeBegin();
                 return *it;
             }else {
                 auto it = new Iterator<T>();
@@ -153,8 +154,9 @@ class BSTree {
             }
         }
 
-        Iterator<T> end() { 
-            auto it = new Iterator<T>();
+        Iterator<T> end() {
+            auto it = new Iterator<T>(root);
+                it->makeEnd();
             return *it;
         }
 
@@ -163,6 +165,7 @@ class BSTree {
                 root->killSelf();
             root = nullptr;
             nodes = 0;
+
         }
 };
 

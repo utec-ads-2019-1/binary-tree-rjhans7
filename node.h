@@ -18,6 +18,7 @@ class Node {
             left = right = nullptr;
             data = value;
         };
+
         void killSelf() {
             if(left)
                 left->killSelf();

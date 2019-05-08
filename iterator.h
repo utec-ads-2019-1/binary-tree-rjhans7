@@ -10,22 +10,21 @@ class Iterator {
         Node<T> *current;
         stack<Node<T>*> *firstStack;
         stack<Node<T>*> *secondStack;
+        bool begin, end;
 
     public:
         Iterator() {
             current = nullptr;
             firstStack = new stack<Node<T>*>;
             secondStack = new stack<Node<T>*>;
+            begin = end = false;
         }
 
         explicit Iterator(Node<T> *node) {
             current = node;
             firstStack = new stack<Node<T>*>;
             secondStack = new stack<Node<T>*>;
-            while(current->left){
-                firstStack->push(current);
-                current = current->left;
-            }
+            begin = end = false;
         }
 
         Iterator<T>& operator=(Iterator<T> other) {
@@ -37,30 +36,80 @@ class Iterator {
             return this->current != other.current;
         }
 
+        void makeBegin(){
+            while(current->left){
+                firstStack->push(current);
+                current = current->left;
+            }
+            begin = true;
+        }
+        void makeEnd(){
+            while(current->right){
+                secondStack->push(current);
+                current = current->right;
+            }
+                secondStack->push(current);
+                current = nullptr;
+                end = true;
+        }
+
         Iterator<T> operator++() {
             if(current) {
-                if((!current->left && !current->right) && !firstStack->empty()) {
+                if((!current->left && !current->right) && firstStack->empty() && !end) {
+                    secondStack->push(current);
+                    current = nullptr;
+                    end = true;
+                }else if((!current->left && !current->right) && !firstStack->empty()) {
+                    secondStack->push(current);
                     current = firstStack->top();
                     firstStack->pop();
                 }else if (!current->right && !firstStack->empty()){
+                    secondStack->push(current);
                     current = firstStack->top();
                     firstStack->pop();
                 }else {
                     if (current->right) {
+                        secondStack->push(current);
                         current = current->right;
                         while (current->left) {
                             firstStack->push(current);
                             current = current->left;
                         }
-
                     }
                 }
-            }
+                begin = false;
+            }//falta if end
             return *this;
         }
 
         Iterator<T> operator--() {
-            // TODO
+            if (current) {
+                if (end) {
+                    current = secondStack->top();
+                    secondStack->pop();
+                } else if ((!current->left && !current->right) && secondStack->empty()) {
+                    firstStack->push(current);
+                    current = nullptr;
+                    begin = true;
+                } else if ((!current->left && !current->right) && !secondStack->empty()) {
+                    current = secondStack->top();
+                    secondStack->pop();
+                } else if (!current->left && !secondStack->empty()) {
+                    current = secondStack->top();
+                    secondStack->pop();
+                } else if (current->left) {
+                    firstStack->push(current);
+                    current = current->left;
+                    secondStack->pop();
+                    while (current->right) {
+                        secondStack->push(current);
+                        current = current->right;
+                    }
+                }
+                //falta if begin
+                end = false;
+                return *this;
+            }
         }
 
         T operator*() {
