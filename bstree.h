@@ -155,9 +155,8 @@ class BSTree {
         }
 
         Iterator<T> end() {
-            auto it = new Iterator<T>();
+            auto it = new Iterator<T>(root);
                 it->makeEnd();
-                it++;
             return *it;
         }
 
