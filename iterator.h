@@ -78,12 +78,11 @@ class Iterator {
                     }
                 }
                 begin = false;
-            }//falta if end
+            }
             return *this;
         }
 
         Iterator<T> operator--() {
-            if (current) {
                 if (end) {
                     current = secondStack->top();
                     secondStack->pop();
@@ -106,10 +105,9 @@ class Iterator {
                         current = current->right;
                     }
                 }
-                //falta if begin
                 end = false;
                 return *this;
-            }
+
         }
 
         T operator*() {
