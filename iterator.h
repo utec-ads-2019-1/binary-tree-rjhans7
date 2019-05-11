@@ -83,6 +83,7 @@ class Iterator {
         }
 
         Iterator<T> operator--() {
+            // El -- tiene algún problem
                 if (end) {
                     current = secondStack->top();
                     secondStack->pop();
@@ -111,6 +112,7 @@ class Iterator {
         }
 
         T operator*() {
+            // Falta controlar el caso vacío
             return current->data;
         }
 };
